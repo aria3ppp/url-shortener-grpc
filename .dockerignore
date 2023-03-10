@@ -1,0 +1,11 @@
+/.git/
+/.gitignore
+
+/.vscode/
+
+/coverage.out
+
+/.env
+
+/rest-api-server
+/grpc-server

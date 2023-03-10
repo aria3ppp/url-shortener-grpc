@@ -1,0 +1,78 @@
+version: "3"
+
+services:
+  healthchecker:
+    image: hello-world
+    depends_on:
+      rest-api-server:
+        condition: service_healthy
+      grpc-server:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+
+  rest-api-server:
+    image: aria3ppp/url-shortener-rest
+    # build:
+    #   target: rest-api-server
+    #   context: .
+    #   args:
+    #     - GO_VERSION=1.20
+    #     - MIGRATE_VERSION=4.15.2
+    env_file: .env
+    ports:
+      - ${REST_API_SERVER_PORT}:${REST_API_SERVER_PORT}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -I http://localhost:${REST_API_SERVER_PORT} | grep -q 'HTTP/1.1 404 Not Found'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+  grpc-server:
+    image: aria3ppp/url-shortener-grpc
+    # build:
+    #   target: grpc-server
+    #   context: .
+    #   args:
+    #     - GO_VERSION=1.20
+    #     - MIGRATE_VERSION=4.15.2
+    env_file: .env
+    ports:
+      - ${GRPC_SERVER_PORT}:${GRPC_SERVER_PORT}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl localhost:8081 2>&1 | grep -q 'curl: (1) Received HTTP/0.9 when not allowed'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+  postgres:
+    image: postgres:14-alpine
+    env_file: .env
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    command: -p ${POSTGRES_PORT}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -p $${POSTGRES_PORT} -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+    driver: local

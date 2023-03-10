@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+option go_package = "github.com/aria3ppp/url-shortener/internal/pb";
+
+package url_shortener;
+
+service UrlShortener {
+    rpc GetLink(GetLinkRequest) returns (GetLinkResponse) {};
+    rpc CreateLink(CreateLinkRequest) returns (CreateLinkResponse) {};
+    rpc GetLinkUser(GetLinkUserRequest) returns (GetLinkUserResponse) {};
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {};
+}
+
+message GetLinkRequest {
+    string shortened_string = 1;
+}
+
+message GetLinkResponse {
+    string url = 1;
+}
+
+message CreateLinkRequest {
+    string url = 1;
+    string shortened_string = 2;
+}
+
+message CreateLinkResponse {
+    string shortened_string = 1;
+}
+
+message GetLinkUserRequest {
+    string shortened_string = 1;
+}
+
+message GetLinkUserResponse {
+    string username = 1;
+}
+
+message CreateUserRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message CreateUserResponse {}
