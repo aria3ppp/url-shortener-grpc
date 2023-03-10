@@ -16,7 +16,7 @@ RUN go mod verify
 # copy source files and build the binaries
 COPY . .
 RUN go build -o rest-api-server ./cmd/rest-api-server
-RUN go build -o grpc-server ./cmd/gprc-server
+RUN go build -o grpc-server ./cmd/grpc-server
 
 
 FROM alpine:latest as rest-api-server
