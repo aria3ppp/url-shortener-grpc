@@ -1,15 +1,14 @@
-# url-shortener
+# url-shortener-grpc
 
-`url-shortener` is a backend implementation for a url shortener service written in golang advantage Hexagonal architecture (ports & adaptors) and DDD (domain-driven design).
+`url-shortener-grpc` is a bost rest api and grpc server for a url shortener service written in golang advantage Hexagonal architecture (ports & adaptors) and DDD (domain-driven design).
 
-[![Tests](https://github.com/aria3ppp/url-shortener/actions/workflows/tests.yml/badge.svg)](https://github.com/aria3ppp/url-shortener/actions/workflows/tests.yml)
-[![Coverage Status](https://coveralls.io/repos/github/aria3ppp/url-shortener/badge.svg?branch=master)](https://coveralls.io/github/aria3ppp/url-shortener?branch=master)
+[![Tests](https://github.com/aria3ppp/url-shortener-grpc/actions/workflows/tests.yml/badge.svg)](https://github.com/aria3ppp/url-shortener-grpc/actions/workflows/tests.yml)
+[![Coverage Status](https://coveralls.io/repos/github/aria3ppp/url-shortener-grpc/badge.svg?branch=master)](https://coveralls.io/github/aria3ppp/url-shortener-grpc?branch=master)
 
-### To run the server:
+### To run servers:
 
 ```bash
 cp .env.example .env && make server-testdeploy-up
 ```
 
-Now rest api server is up and running at port `8080` on your `localhost`.
-This also run the grpc server at port `8081` on your `localhost`.
+Now both rest api server at port `8080` and grpc server at port `8081` are up and running on your `localhost`.
