@@ -34,7 +34,7 @@ func setup(
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
 	if err != nil {
 		log.Panicf(
-			"handler_test.setup: postgres.WithInstance error: %s",
+			"gapi_test.setup: postgres.WithInstance error: %s",
 			err,
 		)
 	}
@@ -44,7 +44,7 @@ func setup(
 	)
 	if err != nil {
 		log.Panicf(
-			"handler_test.setup: migrate.NewWithDatabaseInstance error: %s",
+			"gapi_test.setup: migrate.NewWithDatabaseInstance error: %s",
 			err,
 		)
 	}
@@ -52,7 +52,7 @@ func setup(
 	// run migrations
 	err = migrator.Up()
 	if err != nil {
-		log.Panicf("handler_test.setup: migrator.Up error: %s", err)
+		log.Panicf("gapi_test.setup: migrator.Up error: %s", err)
 	}
 
 	repository := repository.NewRepository(db)
@@ -66,7 +66,7 @@ func setup(
 
 	go func() {
 		if err := server.Serve(listener); err != nil {
-			log.Fatal("setup: failed to serve server:", err)
+			log.Fatal("gapi_test.setup: failed to serve server:", err)
 		}
 	}()
 
@@ -81,19 +81,22 @@ func setup(
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
-		log.Fatal("setup: failed to dial server:", err)
+		log.Fatal("gapi_test.setup: failed to dial server:", err)
 	}
 
 	// prepare teardown
 	teardown = func() {
 		// drop migrations
-		err = migrator.Drop()
-		if err != nil {
-			log.Panicf("handler_test.teardown: migrator.Drop error: %s", err)
+		if err = migrator.Drop(); err != nil {
+			log.Panicf("gapi_test.teardown: migrator.Drop error: %s", err)
+		}
+		// close connection
+		if err := conn.Close(); err != nil {
+			log.Fatal("gapi_test.teardown: failed to close connection")
 		}
 		// close listener
 		if err := listener.Close(); err != nil {
-			log.Fatal("teardown: failed to close listener:", err)
+			log.Fatal("gapi_test.teardown: failed to close listener:", err)
 		}
 		// stop server
 		server.Stop()
@@ -116,7 +119,7 @@ func TestMain(m *testing.M) {
 	db, err = sql.Open("postgres", dsn)
 	if err != nil {
 		log.Panicf(
-			"handler_test.TestMain: could not connect to database %q: %s",
+			"gapi_test.TestMain: could not connect to database %q: %s",
 			dsn,
 			err,
 		)
@@ -124,7 +127,7 @@ func TestMain(m *testing.M) {
 	err = db.Ping()
 	if err != nil {
 		log.Panicf(
-			"handler_test.TestMain: could not ping database %q: %s",
+			"gapi_test.TestMain: could not ping database %q: %s",
 			dsn,
 			err,
 		)
@@ -136,7 +139,7 @@ func TestMain(m *testing.M) {
 	// close db
 	err = db.Close()
 	if err != nil {
-		log.Panicf("handler_test.TestMain: db.Close error: %s", err)
+		log.Panicf("gapi_test.TestMain: db.Close error: %s", err)
 	}
 
 	os.Exit(code)
