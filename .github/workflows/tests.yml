@@ -55,8 +55,8 @@ jobs:
 
       - name: Build image
         run: |
-          docker build . --build-arg=GO_VERSION=1.20 --build-arg=MIGRATE_VERSION=4.15.2 --tag ${{ env.IMAGE_REST_SERVER }}
-          docker build . --build-arg=GO_VERSION=1.20 --build-arg=MIGRATE_VERSION=4.15.2 --tag ${{ env.IMAGE_GRPC_SERVER }}
+          docker build . --target rest-api-server --build-arg=GO_VERSION=1.20 --build-arg=MIGRATE_VERSION=4.15.2 --tag ${{ env.IMAGE_REST_SERVER }}
+          docker build . --target grpc-server --build-arg=GO_VERSION=1.20 --build-arg=MIGRATE_VERSION=4.15.2 --tag ${{ env.IMAGE_GRPC_SERVER }}
       
       - name: Deploy to docker hub
         run: |
