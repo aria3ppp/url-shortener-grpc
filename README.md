@@ -1,6 +1,6 @@
 # url-shortener-grpc
 
-`url-shortener-grpc` is a bost rest api and grpc server for a url shortener service written in golang advantage Hexagonal architecture (ports & adaptors) and DDD (domain-driven design).
+`url-shortener-grpc` is a grpc server for a url shortener service written in golang advantage Hexagonal architecture (ports & adaptors) and DDD (domain-driven design).
 
 [![Tests](https://github.com/aria3ppp/url-shortener-grpc/actions/workflows/tests.yml/badge.svg)](https://github.com/aria3ppp/url-shortener-grpc/actions/workflows/tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/aria3ppp/url-shortener-grpc/badge.svg?branch=master)](https://coveralls.io/github/aria3ppp/url-shortener-grpc?branch=master)
