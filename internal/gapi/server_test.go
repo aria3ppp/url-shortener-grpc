@@ -59,7 +59,7 @@ func setup(
 	generator := generator.NewRandomStringGenerator(6)
 	serviceUseCases := usecase.NewService(repository, generator)
 
-	listener := bufconn.Listen(101024 * 1024)
+	listener := bufconn.Listen(1024 * 1024)
 
 	server := grpc.NewServer()
 	pb.RegisterUrlShortenerServer(server, gapi.NewServer(serviceUseCases))
