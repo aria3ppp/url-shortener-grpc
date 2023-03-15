@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/aria3ppp/url-shortener/internal/pb";
+option go_package = "github.com/aria3ppp/url-shortener-grpc/internal/pb";
 
 package url_shortener;
 
